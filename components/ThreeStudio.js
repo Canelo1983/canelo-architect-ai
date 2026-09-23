@@ -1,0 +1,6 @@
+'use client';
+import {Canvas} from '@react-three/fiber';
+import {OrbitControls,Grid} from '@react-three/drei';
+const houseRooms=[['Living',0,0,6,5],['Kitchen',6,0,4,5],['Master',0,5,5,4],['Bed 2',5,5,5,4],['Garage',10,0,5,6],['Bath',10,6,2.5,3],['Bed 3',12.5,6,4,3]];
+function Building({mode,w,d}){const rooms=mode==='house'?houseRooms:[['Brooder',0,0,w*.25,d],['Main flock',w*.25,0,w*.55,d],['Feed/Store',w*.8,0,w*.2,d]];return <>{rooms.map((r,i)=>{let[n,x,z,rw,rd]=r;if(mode==='house'){const sx=w/16.5,sz=d/9;x*=sx;z*=sz;rw*=sx;rd*=sz}return <group key={n}><mesh position={[x+rw/2,1.35,z+rd/2]}><boxGeometry args={[rw,2.7,rd]}/><meshStandardMaterial color={i%2?'#d8d0c4':'#eee9df'} roughness={.7}/></mesh><mesh position={[x+rw/2,2.76,z+rd/2]}><boxGeometry args={[rw+.25,.18,rd+.25]}/><meshStandardMaterial color="#252a30"/></mesh></group>})}</>}
+export default function ThreeStudio({mode,w,d}){return <Canvas camera={{position:[w*.8,Math.max(w,d)*.75,d*1.25],fov:45}}><ambientLight intensity={1.7}/><directionalLight position={[10,20,10]} intensity={2}/><Grid args={[80,80]} cellSize={1} cellThickness={.5} sectionSize={5}/><Building mode={mode} w={w} d={d}/><OrbitControls makeDefault target={[w/2,0,d/2]}/></Canvas>}
